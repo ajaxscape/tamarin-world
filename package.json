@@ -1,0 +1,30 @@
+{
+  "name": "tamarin-world",
+  "version": "1.0.0",
+  "description": "Tamarin world module",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ajaxscape/tamarin-world.git"
+  },
+  "keywords": [
+    "tamarin",
+    "cucumber",
+    "e2e",
+    "cucumberjs",
+    "testing",
+    "world"
+  ],
+  "author": "Ben Surgison",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/ajaxscape/tamarin-world/issues"
+  },
+  "homepage": "https://github.com/ajaxscape/tamarin-world#readme",
+  "devDependencies": {
+    "standard": "^7.1.1"
+  }
+}

@@ -16,6 +16,16 @@ describe('world class', function () {
     world.getData('foo').should.equal('bar')
   })
 
+  it('can set and retrieve a driver', function () {
+    const world = new TamarinWorld()
+    const driver = {
+      getId: () => 'abc'
+    }
+    world.setDriver(driver)
+    world.getDriver().should.equal(driver)
+    world.getDriver().getId().should.equal('abc')
+  })
+
   describe('can be extended', function () {
     class World extends TamarinWorld {
       setTestVal (val) {

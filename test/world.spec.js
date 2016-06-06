@@ -33,10 +33,9 @@ describe('world class', function () {
       world.getTestVal().should.equal('barfoo')
     })
 
-    it('worlds should be context free', function () {
+    it('should be context free', function () {
       const world = new World()
-      let val = world.getTestVal()
-
+      expect(world.getTestVal()).to.equal(undefined)
     })
   })
 })

@@ -18,12 +18,14 @@ describe('world class', function () {
   })
 
   it('can set and retrieve a driver', function () {
-    const driver = {
+    const dummyDriver = () => ({
       getId: () => 'abc'
-    }
-    const world = new TamarinWorld(driver)
-    world.getDriver().should.equal(driver)
-    world.getDriver().getId().should.equal('abc')
+    })
+    const world = new TamarinWorld(dummyDriver)
+    world.getDriver((driver) => {
+      driver.should.equal(dummyDriver)
+      driver.getId().should.equal('abc')
+    })
   })
 
   describe('can be extended', function () {
@@ -44,8 +46,21 @@ describe('world class', function () {
     })
 
     it('should be context free', function () {
-      const world = new World()
-      expect(world.getTestVal()).to.equal(undefined)
+      const worldA = new World()
+      worldA.setTestVal('barfoo')
+
+      const worldB = new World()
+      worldB.setTestVal('foobar')
+
+      expect(worldA.getTestVal()).to.equal('barfoo')
+      expect(worldB.getTestVal()).to.equal('foobar')
+
+      worldA.getDriver((driver) => {
+        const driverA = driver
+        worldB.getDriver((driver) => {
+          expect(driver).to.not.equal(driverA)
+        })
+      })
     })
   })
 })

@@ -1,13 +1,14 @@
 'use strict'
 
 const TamarinWorld = require('../lib/world')
+const chai = require('chai')
 
-require('chai')
+chai
   .use(require('chai-things'))
   .use(require('chai-as-promised'))
   .should()
 
-const expect = require('chai').expect
+const expect = chai.expect
 
 describe('world class', function () {
   it('can be instantiated', function () {

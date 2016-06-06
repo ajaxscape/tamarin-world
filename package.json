@@ -24,6 +24,17 @@
   "bugs": {
     "url": "https://github.com/ajaxscape/tamarin-world/issues"
   },
+  "standard": {
+    "globals": [
+      "describe",
+      "it",
+      "before",
+      "beforeEach",
+      "after",
+      "afterEach",
+      "expect"
+    ]
+  },
   "homepage": "https://github.com/ajaxscape/tamarin-world#readme",
   "devDependencies": {
     "chai": "^3.5.0",
@@ -32,5 +43,8 @@
     "istanbul": "^0.4.3",
     "mocha": "^2.5.3",
     "standard": "^7.1.1"
+  },
+  "dependencies": {
+    "selenium-webdriver": "^2.53.2"
   }
 }

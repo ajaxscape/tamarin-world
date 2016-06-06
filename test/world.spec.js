@@ -1,13 +1,13 @@
 'use strict'
 
-const TamarinWorld = require('../index')
+const TamarinWorld = require('../lib/world')
 
-  require('chai')
-    .use(require('chai-things'))
-    .use(require('chai-as-promised'))
-    .should()
+require('chai')
+  .use(require('chai-things'))
+  .use(require('chai-as-promised'))
+  .should()
 
- const expect = (require('chai').expect)
+const expect = require('chai').expect
 
 describe('world class', function () {
   it('can be instantiated', function () {
@@ -17,11 +17,10 @@ describe('world class', function () {
   })
 
   it('can set and retrieve a driver', function () {
-    const world = new TamarinWorld()
     const driver = {
       getId: () => 'abc'
     }
-    world.setDriver(driver)
+    const world = new TamarinWorld(driver)
     world.getDriver().should.equal(driver)
     world.getDriver().getId().should.equal('abc')
   })

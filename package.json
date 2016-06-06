@@ -4,7 +4,8 @@
   "description": "Tamarin world module",
   "main": "index.js",
   "scripts": {
-    "test": "node node_modules/mocha/bin/mocha"
+    "test": "node node_modules/mocha/bin/mocha",
+    "coverage": "node node_modules/istanbul/lib/cli.js cover ./node_modules/mocha/bin/_mocha -- --ui bdd -R spec -t 5000"
   },
   "repository": {
     "type": "git",
@@ -28,6 +29,7 @@
     "chai": "^3.5.0",
     "chai-as-promised": "^5.3.0",
     "chai-things": "^0.2.0",
+    "istanbul": "^0.4.3",
     "mocha": "^2.5.3",
     "standard": "^7.1.1"
   }

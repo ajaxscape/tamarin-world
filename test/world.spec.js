@@ -14,7 +14,7 @@ describe('world class', function () {
   it('can be instantiated', function () {
     const world = new TamarinWorld()
     world.setData('foo', 'bar')
-    world.getData('foo').should.equal('bar')
+    return world.getData('foo').should.equal('bar')
   })
 
   it('can set and retrieve a driver', function () {
@@ -22,7 +22,7 @@ describe('world class', function () {
       getId: () => 'abc'
     })
     const world = new TamarinWorld(dummyDriver)
-    world.getDriver((driver) => {
+    return world.getDriver((driver) => {
       driver.should.equal(dummyDriver)
       driver.getId().should.equal('abc')
     })
@@ -42,7 +42,7 @@ describe('world class', function () {
     it('can be extended', function () {
       const world = new World()
       world.setTestVal('barfoo')
-      world.getTestVal().should.equal('barfoo')
+      return world.getTestVal().should.equal('barfoo')
     })
 
     it('should be context free', function () {
@@ -55,12 +55,19 @@ describe('world class', function () {
       expect(worldA.getTestVal()).to.equal('barfoo')
       expect(worldB.getTestVal()).to.equal('foobar')
 
-      worldA.getDriver((driver) => {
+      return worldA.getDriver((driver) => {
         const driverA = driver
-        worldB.getDriver((driver) => {
+        return worldB.getDriver((driver) => {
           expect(driver).to.not.equal(driverA)
         })
       })
+    })
+  })
+
+  describe('until extentions', function () {
+    it('titleIs', function () {
+      const world = new TamarinWorld()
+      return world.until.titleIs('abc').should.eventually.be.equal(true)
     })
   })
 })

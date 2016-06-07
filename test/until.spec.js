@@ -21,6 +21,7 @@ describe('until', function () {
     }
     const until = tamarinUntil(world, originalUntil)
     until.id.should.equal(originalUntil.id)
+    expect(_.isFunction(until.foundInPage)).to.equal(true)
     expect(_.isFunction(until.notFoundInPage)).to.equal(true)
     expect(_.isFunction(until.titleIs)).to.equal(true)
     expect(_.isFunction(until.browserReady)).to.equal(true)
@@ -28,11 +29,13 @@ describe('until', function () {
 
   describe('condition', function () {
     let found
+    const title = 'test title'
 
     const world = {
       getDriver: function () {
         return {
-          findElement: () => found ? Promise.resolve() : Promise.reject()
+          findElement: () => found ? Promise.resolve() : Promise.reject(),
+          getTitle: () => Promise.resolve(title)
         }
       }
     }
@@ -64,6 +67,18 @@ describe('until', function () {
       it('rejected', function () {
         found = true
         return notFoundInPage().should.eventually.equal(false)
+      })
+    })
+
+    describe('titleIs', function () {
+      const titleIs = until.titleIs().fn
+
+      it('resolved', function () {
+        return titleIs(title).should.eventually.equal(true)
+      })
+
+      it('rejected', function () {
+        return titleIs().should.eventually.equal(false)
       })
     })
   })

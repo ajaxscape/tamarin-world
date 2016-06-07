@@ -63,11 +63,4 @@ describe('world class', function () {
       })
     })
   })
-
-  describe('until extentions', function () {
-    it('titleIs', function () {
-      const world = new TamarinWorld()
-      return world.until.titleIs('abc').should.eventually.be.equal(true)
-    })
-  })
 })

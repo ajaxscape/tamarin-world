@@ -29,13 +29,15 @@ describe('until', function () {
 
   describe('condition', function () {
     let found
+    let url
     const title = 'test title'
 
     const world = {
       getDriver: function () {
         return {
           findElement: () => found ? Promise.resolve() : Promise.reject(),
-          getTitle: () => Promise.resolve(title)
+          getTitle: () => Promise.resolve(title),
+          getCurrentUrl: () => Promise.resolve(url)
         }
       }
     }
@@ -47,7 +49,7 @@ describe('until', function () {
 
       it('resolved', function () {
         found = true
-        return foundInPage().should.eventually.equal(true)
+        return foundInPage('abc').should.eventually.equal(true)
       })
 
       it('rejected', function () {
@@ -78,7 +80,21 @@ describe('until', function () {
       })
 
       it('rejected', function () {
-        return titleIs().should.eventually.equal(false)
+        return titleIs('').should.eventually.equal(false)
+      })
+    })
+
+    describe('browserReady', function () {
+      const browserReady = until.browserReady().fn
+
+      it('resolved', function () {
+        url = '/'
+        return browserReady().should.eventually.equal(true)
+      })
+
+      it('rejected', function () {
+        url = 'data:,'
+        return browserReady().should.eventually.equal(false)
       })
     })
   })

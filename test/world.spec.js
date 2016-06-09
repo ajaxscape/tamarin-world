@@ -16,19 +16,18 @@ describe('world class', function () {
     world.setData('foo', 'bar')
     return world.getData('foo').should.equal('bar')
   })
-  //
-  //it('can set and retrieve a driver', function (done) {
-  //  const dummyDriver = () => ({
-  //    getId: () => 'abc'
-  //  })
-  //  const world = new TamarinWorld(dummyDriver)
-  //  const driver = world.getDriver()
-  //  world.getDriver((driver) => {
-  //    driver.should.equal(dummyDriver)
-  //    driver.getId().should.equal('abcc')
-  //    done()
-  //  })
-  //})
+
+  it('can set and retrieve a driver', function () {
+    const dummyDriver = {
+      getId: () => 'abc'
+    }
+    const world = new TamarinWorld(dummyDriver)
+    return world.getDriver()
+      .then((driver) => {
+        driver.should.equal(dummyDriver)
+        return Promise.resolve(driver.getId().should.equal('abc'))
+      })
+  })
 
   it('can set and retrieve the until module', function () {
     const dummyUntil = {
@@ -58,7 +57,7 @@ describe('world class', function () {
       return world.getTestVal().should.equal('barfoo')
     })
 
-    it('should be context free', function (done) {
+    it('should be context free', function () {
       const worldA = new World()
       worldA.setTestVal('barfoo')
 
@@ -67,14 +66,6 @@ describe('world class', function () {
 
       expect(worldA.getTestVal()).to.equal('barfoo')
       expect(worldB.getTestVal()).to.equal('foobar')
-
-      worldA.getDriver((driver) => {
-        const driverA = driver
-        worldB.getDriver((driver) => {
-          expect(driver).to.not.equal(driverA)
-          done()
-        })
-      })
     })
   })
 })

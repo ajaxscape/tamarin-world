@@ -45,7 +45,7 @@ describe('world class', function () {
       getId: () => 'abc'
     }
     const world = new TamarinWorld(null, dummyUntil)
-    const until = world.getUnitl()
+    const until = world.getUntil()
     until.should.equal(dummyUntil)
     until.getId().should.equal('abc')
     until.titleIs.should.be.a('function')

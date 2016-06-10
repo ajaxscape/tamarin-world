@@ -1,6 +1,8 @@
 'use strict'
 
+const webDriver = require('selenium-webdriver')
 const TamarinWorld = require('../lib/world')
+const _ = require('lodash')
 const chai = require('chai')
 
 chai
@@ -18,14 +20,23 @@ describe('world class', function () {
   })
 
   it('can set and retrieve a driver', function () {
-    const dummyDriver = {
-      getId: () => 'abc'
-    }
+    const phantomjs = webDriver.Capabilities.phantomjs()
+    phantomjs.set('phantomjs.binary.path', require('phantomjs-prebuilt').path)
+    const dummyDriver = new webDriver.Builder()
+      .withCapabilities(phantomjs)
+      .build()
     const world = new TamarinWorld(dummyDriver)
     return world.getDriver()
       .then((driver) => {
         driver.should.equal(dummyDriver)
-        return Promise.resolve(driver.getId().should.equal('abc'))
+        _.isFunction(driver.findElement).should.equal(true)
+      })
+  })
+
+  it('can retrieve default driver', function () {
+    new TamarinWorld().getDriver()
+      .then((driver) => {
+        _.isFunction(driver.findElement).should.equal(true)
       })
   })
 

@@ -2,7 +2,6 @@
 
 const cor = require('../lib/co-routines')
 const TamarinWorld = require('../lib/world')
-const _ = require('lodash')
 const chai = require('chai')
 
 chai
@@ -18,13 +17,17 @@ describe('co-routines', function () {
   })
   describe('valid world', function () {
     var coRoutines
+    var el
 
     beforeEach(function () {
       coRoutines = cor.getCoRoutines(new TamarinWorld())
+      el = {
+        getOuterHtml: () => Promise.resolve('')
+      }
     })
 
-    it('exists', function () {
-      expect(_.isFunction(coRoutines.whenVisible)).to.equal(true)
+    it('whenVisible', function () {
+      return coRoutines.whenVisible(el).should.eventually.be.equal(true)
     })
   })
 })

@@ -13,11 +13,10 @@ chai
 const expect = chai.expect
 
 describe('co-routines', function () {
-  it('must have world', function() {
+  it('must have world', function () {
     expect(cor.getCoRoutines).to.throw('World must be defined')
   })
-  describe('valid world', function(){
-
+  describe('valid world', function () {
     var coRoutines
 
     beforeEach(function () {
@@ -27,6 +26,5 @@ describe('co-routines', function () {
     it('exists', function () {
       expect(_.isFunction(coRoutines.whenVisible)).to.equal(true)
     })
-
   })
 })

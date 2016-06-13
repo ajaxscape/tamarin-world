@@ -12,6 +12,10 @@ chai
 const expect = chai.expect
 
 describe('until', function () {
+  it('must have world', function() {
+    expect(tamarinUntil).to.throw('World must be defined')
+  })
+
   it('can be extended', function () {
     const world = {
       id: 'foo'

@@ -38,11 +38,11 @@ describe('until', function () {
 
     const world = {
       getDriver: function () {
-        return {
+        return Promise.resolve({
           findElement: () => found ? Promise.resolve() : Promise.reject(),
           getTitle: () => Promise.resolve(title),
           getCurrentUrl: () => Promise.resolve(url)
-        }
+        })
       }
     }
 

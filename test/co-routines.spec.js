@@ -26,6 +26,7 @@ describe('co-routines', function () {
     let world
     let coRoutines
     let el
+    let html = '<h1>Hello</h1>'
 
     let resolves = (world) => sinon.stub(world, 'getUntil').returns({
       elementIsEnabled: () => Promise.resolve(true),
@@ -39,7 +40,7 @@ describe('co-routines', function () {
     let rejects = (world) => sinon.stub(world, 'getUntil').returns({
       elementIsEnabled: () => Promise.reject({message: 'Not Enabled'}),
       elementIsVisible: () => Promise.reject({message: 'Not Visible'}),
-      elementIsNotVisible: () => Promise.reject({message: 'Not Visible'}),
+      elementIsNotVisible: () => Promise.reject({message: 'Is Visible'}),
       elementTextIs: () => Promise.reject({message: 'Not Matching Text'}),
       titleIs: () => Promise.reject({message: 'Not Matching Title'}),
       browserReady: () => Promise.reject({message: 'Not Ready'})
@@ -48,7 +49,7 @@ describe('co-routines', function () {
     beforeEach(function () {
       world = new TamarinWorld()
       el = {
-        getOuterHtml: () => Promise.resolve('')
+        getOuterHtml: () => Promise.resolve(html)
       }
     })
 
@@ -91,27 +92,40 @@ describe('co-routines', function () {
 
       it('whenVisible', function () {
         return coRoutines.whenVisible(el)
-          .catch((err) => expect(err.message).to.contain('Not Enabled'))
+          .catch((err) => {
+            expect(err.message).to.contain('Not Enabled')
+            expect(err.message).to.contain(html)
+          })
       })
 
       it('whenHidden', function () {
         return coRoutines.whenHidden(el)
-          .catch((err) => expect(err.message).to.contain('Not Visible'))
+          .catch((err) => {
+            expect(err.message).to.contain('Is Visible')
+            expect(err.message).to.contain(html)
+          })
       })
 
       it('whenMatches', function () {
         return coRoutines.whenMatches(el)
-          .catch((err) => expect(err.message).to.contain('Not Matching Text'))
+          .catch((err) => {
+            expect(err.message).to.contain('Not Matching Text')
+            expect(err.message).to.contain(html)
+          })
       })
 
       it('whenTitleIs', function () {
         return coRoutines.whenTitleIs(el)
-          .catch((err) => expect(err.message).to.contain('Not Matching Title'))
+          .catch((err) => {
+            expect(err.message).to.contain('Not Matching Title')
+          })
       })
 
       it('whenBrowserReady', function () {
         return coRoutines.whenBrowserReady()
-          .catch((err) => expect(err.message).to.contain('Not Ready'))
+          .catch((err) => {
+            expect(err.message).to.contain('Not Ready')
+          })
       })
     })
   })

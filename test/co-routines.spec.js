@@ -3,6 +3,7 @@
 const cor = require('../lib/co-routines')
 const TamarinWorld = require('../lib/world')
 const chai = require('chai')
+const sinon = require('sinon')
 
 chai
   .use(require('chai-things'))
@@ -16,14 +17,24 @@ describe('co-routines', function () {
     expect(cor.getCoRoutines).to.throw('World must be defined')
   })
   describe('valid world', function () {
+    var world
     var coRoutines
     var el
 
     beforeEach(function () {
-      coRoutines = cor.getCoRoutines(new TamarinWorld())
+      world = new TamarinWorld()
+      sinon.stub(world, 'getUntil', () => ({
+        elementIsEnabled: () => true,
+        elementIsVisible: () => true,
+        elementTextIs: () => true,
+        titleIs: () => true,
+        browserReady: () => true
+      }))
+      coRoutines = cor.getCoRoutines(world)
       el = {
         getOuterHtml: () => Promise.resolve('')
       }
+
     })
 
     it('whenVisible', function () {

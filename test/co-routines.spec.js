@@ -1,7 +1,7 @@
 'use strict'
 
 const cor = require('../lib/co-routines')
-const TamarinWorld = require('../lib/world')
+const TamarinWorld = require('../lib/world').World
 const chai = require('chai')
 const sinon = require('sinon')
 

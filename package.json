@@ -1,6 +1,6 @@
 {
   "name": "tamarin-world",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "Tamarin world module",
   "main": "index.js",
   "scripts": {

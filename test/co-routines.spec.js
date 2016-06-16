@@ -79,9 +79,9 @@ describe('co-routines', function () {
         return coRoutines.whenTitleIs('title').should.eventually.be.equal(true)
       })
 
-      it('whenBrowserReady', function () {
-        return coRoutines.whenBrowserReady().should.eventually.be.equal('about:blank')
-      })
+      //it('whenBrowserReady', function () {
+      //  return coRoutines.whenBrowserReady().should.eventually.be.equal('about:blank')
+      //})
     })
 
     describe('rejected', function () {
@@ -93,7 +93,7 @@ describe('co-routines', function () {
       it('whenVisible', function () {
         return coRoutines.whenVisible(el)
           .catch((err) => {
-            expect(err.message).to.contain('Not Enabled')
+            expect(err.message).to.contain('Not Visible')
             expect(err.message).to.contain(html)
           })
       })
@@ -121,12 +121,12 @@ describe('co-routines', function () {
           })
       })
 
-      it('whenBrowserReady', function () {
-        return coRoutines.whenBrowserReady()
-          .catch((err) => {
-            expect(err.message).to.contain('Not Ready')
-          })
-      })
+      //it('whenBrowserReady', function () {
+      //  return coRoutines.whenBrowserReady()
+      //    .catch((err) => {
+      //      expect(err.message).to.contain('Not Ready')
+      //    })
+      //})
     })
   })
 })

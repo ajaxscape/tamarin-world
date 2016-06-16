@@ -89,9 +89,9 @@ describe('co-routines', function () {
         return coRoutines.whenTitleIs('title').should.eventually.be.equal(true)
       })
 
-      //it('whenBrowserReady', function () {
-      //  return coRoutines.whenBrowserReady().should.eventually.be.equal('about:blank')
-      //})
+      it('whenBrowserReady', function () {
+        return coRoutines.whenBrowserReady().should.eventually.be.equal('about:blank')
+      })
     })
 
     describe('rejected', function () {
@@ -102,57 +102,57 @@ describe('co-routines', function () {
 
       it('whenEnabled', function () {
         return coRoutines.whenEnabled(el)
-          .catch((err) => {
-            expect(err.message).to.contain('Not Enabled')
-            expect(err.message).to.contain(html)
-          })
+          .catch((err) => Promise.all([
+            expect(Promise.resolve(err.message)).to.eventually.contain('Not Enabled'),
+            expect(Promise.resolve(err.message)).to.eventually.contain(html)
+          ]))
       })
 
       it('whenDisabled', function () {
         return coRoutines.whenDisabled(el)
-          .catch((err) => {
-            expect(err.message).to.contain('Not Disabled')
-            expect(err.message).to.contain(html)
-          })
+          .catch((err) => Promise.all([
+            expect(Promise.resolve(err.message)).to.eventually.contain('Not Disabled'),
+            expect(Promise.resolve(err.message)).to.eventually.contain(html)
+          ]))
       })
 
       it('whenVisible', function () {
         return coRoutines.whenVisible(el)
-          .catch((err) => {
-            expect(err.message).to.contain('Not Visible')
-            expect(err.message).to.contain(html)
-          })
+          .catch((err) => Promise.all([
+            expect(Promise.resolve(err.message)).to.eventually.contain('Not Visible'),
+            expect(Promise.resolve(err.message)).to.eventually.contain(html)
+          ]))
       })
 
       it('whenHidden', function () {
         return coRoutines.whenHidden(el)
-          .catch((err) => {
-            expect(err.message).to.contain('Is Visible')
-            expect(err.message).to.contain(html)
-          })
+          .catch((err) => Promise.all([
+            expect(Promise.resolve(err.message)).to.eventually.contain('Is Visible'),
+            expect(Promise.resolve(err.message)).to.eventually.contain(html)
+          ]))
       })
 
       it('whenMatches', function () {
         return coRoutines.whenMatches(el)
-          .catch((err) => {
-            expect(err.message).to.contain('Not Matching Text')
-            expect(err.message).to.contain(html)
-          })
+          .catch((err) => Promise.all([
+            expect(Promise.resolve(err.message)).to.eventually.contain('Not Matching Text'),
+            expect(Promise.resolve(err.message)).to.eventually.contain(html)
+          ]))
       })
 
       it('whenTitleIs', function () {
         return coRoutines.whenTitleIs(el)
-          .catch((err) => {
-            expect(err.message).to.contain('Not Matching Title')
-          })
+          .catch((err) => Promise.all([
+            expect(Promise.resolve(err.message)).to.eventually.contain('Not Matching Title')
+          ]))
       })
 
-      //it('whenBrowserReady', function () {
-      //  return coRoutines.whenBrowserReady()
-      //    .catch((err) => {
-      //      expect(err.message).to.contain('Not Ready')
-      //    })
-      //})
+      it('whenBrowserReady', function () {
+        return coRoutines.whenBrowserReady()
+          .catch((err) => Promise.all([
+            expect(Promise.resolve(err.message)).to.eventually.contain('Not Ready')
+          ]))
+      })
     })
   })
 })

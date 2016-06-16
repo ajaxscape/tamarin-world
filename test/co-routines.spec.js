@@ -30,6 +30,7 @@ describe('co-routines', function () {
 
     let resolves = (world) => sinon.stub(world, 'getUntil').returns({
       elementIsEnabled: () => Promise.resolve(true),
+      elementIsDisabled: () => Promise.resolve(true),
       elementIsVisible: () => Promise.resolve(true),
       elementIsNotVisible: () => Promise.resolve(true),
       elementTextIs: () => Promise.resolve(true),
@@ -39,6 +40,7 @@ describe('co-routines', function () {
 
     let rejects = (world) => sinon.stub(world, 'getUntil').returns({
       elementIsEnabled: () => Promise.reject({message: 'Not Enabled'}),
+      elementIsDisabled: () => Promise.reject({message: 'Not Disabled'}),
       elementIsVisible: () => Promise.reject({message: 'Not Visible'}),
       elementIsNotVisible: () => Promise.reject({message: 'Is Visible'}),
       elementTextIs: () => Promise.reject({message: 'Not Matching Text'}),
@@ -61,6 +63,14 @@ describe('co-routines', function () {
       beforeEach(function () {
         resolves(world)
         coRoutines = cor.getCoRoutines(world, 100)
+      })
+
+      it('whenEnabled', function () {
+        return coRoutines.whenEnabled(el).should.eventually.be.equal(el)
+      })
+
+      it('whenDisabled', function () {
+        return coRoutines.whenDisabled(el).should.eventually.be.equal(el)
       })
 
       it('whenVisible', function () {
@@ -88,6 +98,22 @@ describe('co-routines', function () {
       beforeEach(function () {
         rejects(world)
         coRoutines = cor.getCoRoutines(world)
+      })
+
+      it('whenEnabled', function () {
+        return coRoutines.whenEnabled(el)
+          .catch((err) => {
+            expect(err.message).to.contain('Not Enabled')
+            expect(err.message).to.contain(html)
+          })
+      })
+
+      it('whenDisabled', function () {
+        return coRoutines.whenDisabled(el)
+          .catch((err) => {
+            expect(err.message).to.contain('Not Disabled')
+            expect(err.message).to.contain(html)
+          })
       })
 
       it('whenVisible', function () {

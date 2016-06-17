@@ -14,12 +14,12 @@ const expect = chai.expect
 
 describe('co-routines', function () {
   it('must have world', function () {
-    expect(cor.getCoRoutines).to.throw('World must be defined')
+    expect(cor.get).to.throw('World must be defined')
   })
 
   it('must have a valid timeout', function () {
     const world = new TamarinWorld()
-    expect(() => cor.getCoRoutines(world, 'abc')).to.throw('Default Timeout must be a number')
+    expect(() => cor.get(world, 'abc')).to.throw('Default Timeout must be a number')
   })
 
   describe('valid world', function () {
@@ -62,7 +62,7 @@ describe('co-routines', function () {
     describe('resolved', function () {
       beforeEach(function () {
         resolves(world)
-        coRoutines = cor.getCoRoutines(world, 100)
+        coRoutines = cor.get(world, 100)
       })
 
       it('whenEnabled', function () {
@@ -97,7 +97,7 @@ describe('co-routines', function () {
     describe('rejected', function () {
       beforeEach(function () {
         rejects(world)
-        coRoutines = cor.getCoRoutines(world)
+        coRoutines = cor.get(world)
       })
 
       it('whenEnabled', function () {

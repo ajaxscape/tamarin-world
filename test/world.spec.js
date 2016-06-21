@@ -16,7 +16,7 @@ describe('world class', function () {
   it('can be instantiated', function () {
     const world = new TamarinWorld()
     world.setData('foo', 'bar')
-    return world.getData('foo').should.equal('bar')
+    return world.getData('foo').should.eventually.equal('bar')
   })
 
   it('can set and retrieve a driver', function () {
@@ -65,7 +65,7 @@ describe('world class', function () {
     it('can be extended', function () {
       const world = new World()
       world.setTestVal('barfoo')
-      return world.getTestVal().should.equal('barfoo')
+      return world.getTestVal().should.eventually.equal('barfoo')
     })
 
     it('should be context free', function () {
@@ -75,8 +75,8 @@ describe('world class', function () {
       const worldB = new World()
       worldB.setTestVal('foobar')
 
-      expect(worldA.getTestVal()).to.equal('barfoo')
-      expect(worldB.getTestVal()).to.equal('foobar')
+      expect(worldA.getTestVal()).to.eventually.equal('barfoo')
+      expect(worldB.getTestVal()).to.eventually.equal('foobar')
     })
   })
 })

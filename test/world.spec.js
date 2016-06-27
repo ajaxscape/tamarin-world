@@ -1,7 +1,7 @@
 'use strict'
 
 const webDriver = require('selenium-webdriver')
-const TamarinWorld = require('../lib/world').World
+const TamarinWorld = require('../lib/world')
 const _ = require('lodash')
 const chai = require('chai')
 

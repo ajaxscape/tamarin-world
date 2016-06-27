@@ -29,6 +29,7 @@ describe('co-routines', function () {
     let html = '<h1>Hello</h1>'
 
     let resolves = (world) => sinon.stub(world, 'getUntil').returns({
+      findElement: () => Promise.resolve({}),
       elementIsEnabled: () => Promise.resolve(true),
       elementIsDisabled: () => Promise.resolve(true),
       elementIsVisible: () => Promise.resolve(true),
@@ -65,6 +66,10 @@ describe('co-routines', function () {
         coRoutines = cor.get(world, 100)
       })
 
+      it('findElement', function () {
+        return coRoutines.findElement(el).should.eventually.be.equal(el)
+      })
+
       it('whenEnabled', function () {
         return coRoutines.whenEnabled(el).should.eventually.be.equal(el)
       })
@@ -83,6 +88,10 @@ describe('co-routines', function () {
 
       it('whenMatches', function () {
         return coRoutines.whenMatches(el).should.eventually.be.equal(el)
+      })
+
+      it('whenReady', function () {
+        return coRoutines.whenReady(el).should.eventually.be.equal(el)
       })
 
       it('whenTitleIs', function () {

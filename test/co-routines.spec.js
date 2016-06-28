@@ -159,6 +159,13 @@ describe('co-routines', function () {
           ]))
       })
 
+      it('whenReady', function () {
+        return coRoutines.whenReady(el)
+          .catch((err) => Promise.all([
+            expect(Promise.resolve(err.message)).to.eventually.contain('Not Visible')
+          ]))
+      })
+
       it('whenTitleIs', function () {
         return coRoutines.whenTitleIs(el)
           .catch((err) => Promise.all([

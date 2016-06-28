@@ -28,27 +28,6 @@ describe('co-routines', function () {
     let el
     let html = '<h1>Hello</h1>'
 
-    let resolves = (world) => sinon.stub(world, 'getUntil').returns({
-      findElement: () => Promise.resolve({}),
-      elementIsEnabled: () => Promise.resolve(true),
-      elementIsDisabled: () => Promise.resolve(true),
-      elementIsVisible: () => Promise.resolve(true),
-      elementIsNotVisible: () => Promise.resolve(true),
-      elementTextIs: () => Promise.resolve(true),
-      titleIs: () => Promise.resolve(true),
-      browserReady: () => Promise.resolve(true)
-    })
-
-    let rejects = (world) => sinon.stub(world, 'getUntil').returns({
-      elementIsEnabled: () => Promise.reject({message: 'Not Enabled'}),
-      elementIsDisabled: () => Promise.reject({message: 'Not Disabled'}),
-      elementIsVisible: () => Promise.reject({message: 'Not Visible'}),
-      elementIsNotVisible: () => Promise.reject({message: 'Is Visible'}),
-      elementTextIs: () => Promise.reject({message: 'Not Matching Text'}),
-      titleIs: () => Promise.reject({message: 'Not Matching Title'}),
-      browserReady: () => Promise.reject({message: 'Not Ready'})
-    })
-
     beforeEach(function () {
       world = new TamarinWorld()
       el = {
@@ -56,14 +35,28 @@ describe('co-routines', function () {
       }
     })
 
-    afterEach(function () {
-      world.getUntil.restore()
-    })
-
     describe('resolved', function () {
       beforeEach(function () {
-        resolves(world)
+        sinon.stub(world, 'getDriver').returns(Promise.resolve({
+          getCurrentUrl: () => Promise.resolve('/ready'),
+          wait: (fn) => fn
+        }))
+        sinon.stub(world, 'getUntil').returns({
+          findElement: () => Promise.resolve({}),
+          elementIsEnabled: () => Promise.resolve(true),
+          elementIsDisabled: () => Promise.resolve(true),
+          elementIsVisible: () => Promise.resolve(true),
+          elementIsNotVisible: () => Promise.resolve(true),
+          elementTextIs: () => Promise.resolve(true),
+          titleIs: () => Promise.resolve(true),
+          browserReady: () => Promise.resolve(true)
+        })
         coRoutines = cor.get(world, 100)
+      })
+
+      afterEach(function () {
+        world.getUntil.restore()
+        world.getDriver.restore()
       })
 
       it('findElement', function () {
@@ -99,14 +92,31 @@ describe('co-routines', function () {
       })
 
       it('whenBrowserReady', function () {
-        return coRoutines.whenBrowserReady().should.eventually.be.equal('about:blank')
+        return coRoutines.whenBrowserReady().should.eventually.be.equal('/ready')
       })
     })
 
     describe('rejected', function () {
       beforeEach(function () {
-        rejects(world)
-        coRoutines = cor.get(world)
+        sinon.stub(world, 'getDriver').returns(Promise.resolve({
+          getCurrentUrl: () => Promise.resolve('/ready'),
+          wait: (fn) => fn
+        }))
+        sinon.stub(world, 'getUntil').returns({
+          elementIsEnabled: () => Promise.reject({message: 'Not Enabled'}),
+          elementIsDisabled: () => Promise.reject({message: 'Not Disabled'}),
+          elementIsVisible: () => Promise.reject({message: 'Not Visible'}),
+          elementIsNotVisible: () => Promise.reject({message: 'Is Visible'}),
+          elementTextIs: () => Promise.reject({message: 'Not Matching Text'}),
+          titleIs: () => Promise.reject({message: 'Not Matching Title'}),
+          browserReady: () => Promise.reject({message: 'Not Ready'})
+        })
+        coRoutines = cor.get(world, 100)
+      })
+
+      afterEach(function () {
+        world.getUntil.restore()
+        world.getDriver.restore()
       })
 
       it('whenEnabled', function () {

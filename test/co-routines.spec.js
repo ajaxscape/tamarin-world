@@ -39,10 +39,10 @@ describe('co-routines', function () {
       beforeEach(function () {
         sinon.stub(world, 'getDriver').returns(Promise.resolve({
           getCurrentUrl: () => Promise.resolve('/ready'),
+          findElement: () => Promise.resolve(el),
           wait: (fn) => fn
         }))
         sinon.stub(world, 'getUntil').returns({
-          findElement: () => Promise.resolve({}),
           elementIsEnabled: () => Promise.resolve(true),
           elementIsDisabled: () => Promise.resolve(true),
           elementIsVisible: () => Promise.resolve(true),
@@ -100,6 +100,7 @@ describe('co-routines', function () {
       beforeEach(function () {
         sinon.stub(world, 'getDriver').returns(Promise.resolve({
           getCurrentUrl: () => Promise.resolve('/ready'),
+          findElement: () => Promise.resolve(el),
           wait: (fn) => fn
         }))
         sinon.stub(world, 'getUntil').returns({

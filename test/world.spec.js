@@ -48,7 +48,6 @@ describe('world class', function () {
     const until = world.getUntil()
     until.should.equal(dummyUntil)
     until.getId().should.equal('abc')
-    until.titleIs.should.be.a('function')
   })
 
   describe('can be extended', function () {

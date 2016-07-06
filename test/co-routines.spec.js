@@ -83,16 +83,16 @@ describe('co-routines', function () {
         return coRoutines.whenMatches(el).should.eventually.be.equal(el)
       })
 
-      it('whenReady', function () {
-        return coRoutines.whenReady(el).should.eventually.be.equal(el)
+      it('waitFor', function () {
+        return coRoutines.waitFor(el).should.eventually.be.equal(el)
       })
 
-      it('whenTitleIs', function () {
-        return coRoutines.whenTitleIs('title').should.eventually.be.equal(true)
+      it('waitForTitle', function () {
+        return coRoutines.waitForTitle('title').should.eventually.be.equal(true)
       })
 
-      it('whenBrowserReady', function () {
-        return coRoutines.whenBrowserReady().should.eventually.be.equal('/ready')
+      it('waitForBrowser', function () {
+        return coRoutines.waitForBrowser().should.eventually.be.equal('/ready')
       })
     })
 
@@ -160,22 +160,22 @@ describe('co-routines', function () {
           ]))
       })
 
-      it('whenReady', function () {
-        return coRoutines.whenReady(el)
+      it('waitFor', function () {
+        return coRoutines.waitFor(el)
           .catch((err) => Promise.all([
             expect(Promise.resolve(err.message)).to.eventually.contain('Not Visible')
           ]))
       })
 
-      it('whenTitleIs', function () {
-        return coRoutines.whenTitleIs(el)
+      it('waitForTitle', function () {
+        return coRoutines.waitForTitle(el)
           .catch((err) => Promise.all([
             expect(Promise.resolve(err.message)).to.eventually.contain('Not Matching Title')
           ]))
       })
 
-      it('whenBrowserReady', function () {
-        return coRoutines.whenBrowserReady()
+      it('waitForBrowser', function () {
+        return coRoutines.waitForBrowser()
           .catch((err) => Promise.all([
             expect(Promise.resolve(err.message)).to.eventually.contain('Not Ready')
           ]))

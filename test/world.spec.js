@@ -97,7 +97,9 @@ describe('world class', function () {
           }
         })),
         whenEnabled: () => Promise.resolve(true),
-        whenDisabled: () => Promise.resolve(true)
+        whenDisabled: () => Promise.resolve(true),
+        whenVisible: () => Promise.resolve(true),
+        whenHidden: () => Promise.resolve(true)
       }
 
       World = proxyquire('../lib/world', {
@@ -136,19 +138,23 @@ describe('world class', function () {
     })
 
     it('waitForTitle', function (done) {
-      const spy = sinon.spy(corRoutines, 'waitForTitle')
+      sinon.spy(corRoutines, 'waitForTitle')
       world.waitForTitle('abc')
-        .then((result) => result.should.equal(true))
-        .then(() => corRoutines.waitForTitle.restore())
-        .then(() => done())
+        .then((result) => {
+          result.should.equal(true)
+          corRoutines.waitForTitle.restore()
+          done()
+        })
     })
 
     it('waitFor success', function (done) {
-      const waitForSpy = sinon.spy(corRoutines, 'waitFor')
-      world.waitFor('abc', 5)
-        .then((result) => result.should.equal(true))
-        .then(() => corRoutines.waitFor.restore())
-        .then(() => done())
+      sinon.spy(corRoutines, 'waitFor')
+      world.waitFor('abc')
+        .then((result) => {
+          result.should.equal(true)
+          corRoutines.waitFor.restore()
+          done()
+        })
     })
 
     it('waitFor fail', function (done) {
@@ -162,20 +168,44 @@ describe('world class', function () {
         })
     })
 
-    it('whenEnabled', function () {
-      const spy = sinon.spy(corRoutines, 'whenEnabled')
+    it('whenEnabled', function (done) {
+      sinon.spy(corRoutines, 'whenEnabled')
       world.whenEnabled('abc')
-        .then((result) => result.should.equal(true))
-        .then(() => corRoutines.whenEnabled.restore())
-        .then(() => done())
+        .then((result) => {
+          result.should.equal(true)
+          corRoutines.whenEnabled.restore()
+          done()
+        })
     })
 
-    it('whenDisabled', function () {
-      const spy = sinon.spy(corRoutines, 'whenDisabled')
+    it('whenDisabled', function (done) {
+      sinon.spy(corRoutines, 'whenDisabled')
       world.whenDisabled('abc')
-        .then((result) => result.should.equal(true))
-        .then(() => corRoutines.whenDisabled.restore())
-        .then(() => done())
+        .then((result) => {
+          result.should.equal(true)
+          corRoutines.whenDisabled.restore()
+          done()
+        })
+    })
+
+    it('whenVisible', function (done) {
+      sinon.spy(corRoutines, 'whenVisible')
+      world.whenVisible('abc')
+        .then((result) => {
+          result.should.equal(true)
+          corRoutines.whenVisible.restore()
+          done()
+        })
+    })
+
+    it('whenHidden', function (done) {
+      sinon.spy(corRoutines, 'whenHidden')
+      world.whenHidden('abc')
+        .then((result) => {
+          result.should.equal(true)
+          corRoutines.whenHidden.restore()
+          done()
+        })
     })
   })
 })

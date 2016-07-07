@@ -84,9 +84,14 @@ describe('world class', function () {
   })
 
   describe('method', function () {
-    let World, world, driver, corRoutines
+    let World, world, driver, el, corRoutines
 
     beforeEach(function () {
+      el = {
+        sendKeys: () => Promise.resolve(el),
+        hover: () => Promise.resolve(el),
+        click: () => Promise.resolve(el)
+      }
       corRoutines = {
         waitForTitle: () => Promise.resolve(true),
         waitFor: (selector) => (new Promise((resolve) => {
@@ -99,7 +104,8 @@ describe('world class', function () {
         whenEnabled: () => Promise.resolve(true),
         whenDisabled: () => Promise.resolve(true),
         whenVisible: () => Promise.resolve(true),
-        whenHidden: () => Promise.resolve(true)
+        whenHidden: () => Promise.resolve(true),
+        whenMatches: () => Promise.resolve(true)
       }
 
       World = proxyquire('../lib/world', {
@@ -204,6 +210,46 @@ describe('world class', function () {
         .then((result) => {
           result.should.equal(true)
           corRoutines.whenHidden.restore()
+          done()
+        })
+    })
+
+    it('whenMatches', function (done) {
+      sinon.spy(corRoutines, 'whenMatches')
+      world.whenMatches('abc', 'xyz')
+        .then((result) => {
+          result.should.equal(true)
+          corRoutines.whenMatches.restore()
+          done()
+        })
+    })
+
+    it('sendKeys', function (done) {
+      sinon.spy(corRoutines, 'waitFor')
+      world.sendKeys('abc')
+        .then((result) => {
+          result.should.equal(true)
+          corRoutines.waitFor.restore()
+          done()
+        })
+    })
+
+    it('hover', function (done) {
+      sinon.spy(corRoutines, 'waitFor')
+      world.hover('abc')
+        .then((result) => {
+          result.should.equal(true)
+          corRoutines.waitFor.restore()
+          done()
+        })
+    })
+
+    it('click', function (done) {
+      sinon.spy(corRoutines, 'waitFor')
+      world.click('abc')
+        .then((result) => {
+          result.should.equal(true)
+          corRoutines.waitFor.restore()
           done()
         })
     })

@@ -7,9 +7,7 @@ const chai = require('chai')
 const sinon = require('sinon')
 const proxyquire = require('proxyquire')
 
-proxyquire('./co-routines', {
-  'get': (world) => ({})
-});
+require('events').EventEmitter.defaultMaxListeners = Infinity
 
 chai
   .use(require('chai-things'))
@@ -86,17 +84,27 @@ describe('world class', function () {
   })
 
   describe('method', function () {
-    let world, driver
+    let World, world, driver, corRoutines
 
     beforeEach(function () {
-      world = new TamarinWorld()
+      corRoutines = {
+        waitForTitle: () => Promise.resolve(true)
+      }
+
+      World = proxyquire('../lib/world', {'./co-routines': {
+        get: () => corRoutines
+      }})
+
+      world = new World()
+
       driver = {
         getCurrentUrl: () => Promise.resolve('/ready'),
-        findElement: () => Promise.resolve(el),
+        findElement: () => Promise.resolve(),
         sleep: () => Promise.resolve(),
         get: () => Promise.resolve(),
         wait: (fn) => fn
       }
+
       sinon.stub(world, 'getDriver').returns({then: (fn) => fn(driver)})
     })
 
@@ -105,21 +113,24 @@ describe('world class', function () {
     })
 
     it('sleep', function () {
-      const spy = sinon.spy(driver, 'sleep');
+      const spy = sinon.spy(driver, 'sleep')
       world.sleep(10)
-      sinon.assert.calledWith(spy, 10);
+      sinon.assert.calledWith(spy, 10)
       driver.sleep.restore()
     })
 
     it('visit', function () {
-      const spy = sinon.spy(driver, 'get');
+      const spy = sinon.spy(driver, 'get')
       world.visit('abc')
-      sinon.assert.calledWith(spy, 'abc');
+      sinon.assert.calledWith(spy, 'abc')
       driver.get.restore()
     })
 
     it('waitForTitle', function () {
-      world.waitForTitle('abc')
+      const spy = sinon.spy(corRoutines, 'waitForTitle')
+      world.waitForTitle('abc', 20)
+      sinon.assert.calledWith(spy, 'abc', 20)
+      corRoutines.waitForTitle.restore()
     })
   })
 })

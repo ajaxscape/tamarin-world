@@ -5,6 +5,8 @@ const TamarinWorld = require('../lib/world')
 const chai = require('chai')
 const sinon = require('sinon')
 
+require('events').EventEmitter.defaultMaxListeners = Infinity
+
 chai
   .use(require('chai-things'))
   .use(require('chai-as-promised'))

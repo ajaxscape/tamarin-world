@@ -88,12 +88,21 @@ describe('world class', function () {
 
     beforeEach(function () {
       corRoutines = {
-        waitForTitle: () => Promise.resolve(true)
+        waitForTitle: () => Promise.resolve(true),
+        waitFor: (selector) => (new Promise((resolve) => {
+          if (selector === 'error') {
+            throw new Error('In Error')
+          } else {
+            resolve(true)
+          }
+        }))
       }
 
-      World = proxyquire('../lib/world', {'./co-routines': {
-        get: () => corRoutines
-      }})
+      World = proxyquire('../lib/world', {
+        './co-routines': {
+          get: () => corRoutines
+        }
+      })
 
       world = new World()
 
@@ -130,5 +139,24 @@ describe('world class', function () {
       sinon.assert.calledWith(spy, 'abc', 20)
       corRoutines.waitForTitle.restore()
     })
+
+    it('waitFor success', function () {
+      const waitForSpy = sinon.spy(corRoutines, 'waitFor')
+      world.waitFor('abc', 5)
+      sinon.assert.calledWith(waitForSpy, 'abc')
+      corRoutines.waitFor.restore()
+    })
+
+    it('waitFor fail', function (done) {
+      const spy = sinon.spy(driver, 'sleep')
+      world.waitFor('error', 5)
+        .catch((err) => {
+          expect(err.message).to.equal('In Error')
+          sinon.assert.callCount(spy, 5)
+          driver.sleep.restore()
+          done()
+        })
+    })
   })
 })
+

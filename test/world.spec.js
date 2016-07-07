@@ -98,8 +98,6 @@ describe('world class', function () {
       world = new World()
 
       driver = {
-        getCurrentUrl: () => Promise.resolve('/ready'),
-        findElement: () => Promise.resolve(),
         sleep: () => Promise.resolve(),
         get: () => Promise.resolve(),
         wait: (fn) => fn

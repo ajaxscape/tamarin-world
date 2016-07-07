@@ -95,7 +95,9 @@ describe('world class', function () {
           } else {
             resolve(true)
           }
-        }))
+        })),
+        whenEnabled: () => Promise.resolve(true),
+        whenDisabled: () => Promise.resolve(true)
       }
 
       World = proxyquire('../lib/world', {
@@ -133,18 +135,20 @@ describe('world class', function () {
       driver.get.restore()
     })
 
-    it('waitForTitle', function () {
+    it('waitForTitle', function (done) {
       const spy = sinon.spy(corRoutines, 'waitForTitle')
-      world.waitForTitle('abc', 20)
-      sinon.assert.calledWith(spy, 'abc', 20)
-      corRoutines.waitForTitle.restore()
+      world.waitForTitle('abc')
+        .then((result) => result.should.equal(true))
+        .then(() => corRoutines.waitForTitle.restore())
+        .then(() => done())
     })
 
-    it('waitFor success', function () {
+    it('waitFor success', function (done) {
       const waitForSpy = sinon.spy(corRoutines, 'waitFor')
       world.waitFor('abc', 5)
-      sinon.assert.calledWith(waitForSpy, 'abc')
-      corRoutines.waitFor.restore()
+        .then((result) => result.should.equal(true))
+        .then(() => corRoutines.waitFor.restore())
+        .then(() => done())
     })
 
     it('waitFor fail', function (done) {
@@ -156,6 +160,22 @@ describe('world class', function () {
           driver.sleep.restore()
           done()
         })
+    })
+
+    it('whenEnabled', function () {
+      const spy = sinon.spy(corRoutines, 'whenEnabled')
+      world.whenEnabled('abc')
+        .then((result) => result.should.equal(true))
+        .then(() => corRoutines.whenEnabled.restore())
+        .then(() => done())
+    })
+
+    it('whenDisabled', function () {
+      const spy = sinon.spy(corRoutines, 'whenDisabled')
+      world.whenDisabled('abc')
+        .then((result) => result.should.equal(true))
+        .then(() => corRoutines.whenDisabled.restore())
+        .then(() => done())
     })
   })
 })

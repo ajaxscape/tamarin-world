@@ -4,6 +4,12 @@ const webDriver = require('selenium-webdriver')
 const TamarinWorld = require('../lib/world')
 const _ = require('lodash')
 const chai = require('chai')
+const sinon = require('sinon')
+const proxyquire = require('proxyquire')
+
+proxyquire('./co-routines', {
+  'get': (world) => ({})
+});
 
 chai
   .use(require('chai-things'))
@@ -76,6 +82,44 @@ describe('world class', function () {
 
       expect(worldA.getTestVal()).to.eventually.equal('barfoo')
       expect(worldB.getTestVal()).to.eventually.equal('foobar')
+    })
+  })
+
+  describe('method', function () {
+    let world, driver
+
+    beforeEach(function () {
+      world = new TamarinWorld()
+      driver = {
+        getCurrentUrl: () => Promise.resolve('/ready'),
+        findElement: () => Promise.resolve(el),
+        sleep: () => Promise.resolve(),
+        get: () => Promise.resolve(),
+        wait: (fn) => fn
+      }
+      sinon.stub(world, 'getDriver').returns({then: (fn) => fn(driver)})
+    })
+
+    afterEach(function () {
+      world.getDriver.restore()
+    })
+
+    it('sleep', function () {
+      const spy = sinon.spy(driver, 'sleep');
+      world.sleep(10)
+      sinon.assert.calledWith(spy, 10);
+      driver.sleep.restore()
+    })
+
+    it('visit', function () {
+      const spy = sinon.spy(driver, 'get');
+      world.visit('abc')
+      sinon.assert.calledWith(spy, 'abc');
+      driver.get.restore()
+    })
+
+    it('waitForTitle', function () {
+      world.waitForTitle('abc')
     })
   })
 })

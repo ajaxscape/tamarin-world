@@ -41,7 +41,13 @@ describe('co-routines', function () {
       beforeEach(function () {
         sinon.stub(world, 'getDriver').returns(Promise.resolve({
           getCurrentUrl: () => Promise.resolve('/ready'),
-          findElement: () => Promise.resolve(el),
+          findElement: (selector) => {
+            if (typeof selector === 'string') {
+              return Promise.reject(new Error('findElement failed'))
+            } else {
+              return Promise.resolve(el)
+            }
+          },
           wait: (fn) => fn
         }))
         sinon.stub(world, 'getUntil').returns({

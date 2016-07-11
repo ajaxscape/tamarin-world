@@ -65,10 +65,66 @@ describe('world class', function () {
       }
     }
 
-    it('can be extended', function () {
+    it('with additional methods', function () {
       const world = new World()
       world.setTestVal('barfoo')
       return world.getTestVal().should.eventually.equal('barfoo')
+    })
+
+    it('can be extended maintaining parent methods', function () {
+      const world = new World()
+      world.setData('abcdef', 'barfoo')
+      return world.getData('abcdef').should.eventually.equal('barfoo')
+    })
+
+    it('should be context free', function () {
+      const worldA = new World()
+      worldA.setTestVal('barfoo')
+
+      const worldB = new World()
+      worldB.setTestVal('foobar')
+
+      expect(worldA.getTestVal()).to.eventually.equal('barfoo')
+      expect(worldB.getTestVal()).to.eventually.equal('foobar')
+    })
+  })
+
+  describe('can be extended with use', function () {
+    const MyWorld = (World) => (() => {
+      class ExtendedWorld extends World {
+        setTestVal (val) {
+          this.setData('test', val)
+        }
+
+        getTestVal () {
+          return this.getData('test')
+        }
+      }
+      return ExtendedWorld
+    })()
+
+    TamarinWorld.use(MyWorld)
+
+    class World extends TamarinWorld {
+      setTestVal (val) {
+        this.setData('test', val)
+      }
+
+      getTestVal () {
+        return this.getData('test')
+      }
+    }
+
+    it('with additional methods', function () {
+      const world = new World()
+      world.setTestVal('barfoo')
+      return world.getTestVal().should.eventually.equal('barfoo')
+    })
+
+    it('can be extended maintaining parent methods', function () {
+      const world = new World()
+      world.setData('abcdef', 'barfoo')
+      return world.getData('abcdef').should.eventually.equal('barfoo')
     })
 
     it('should be context free', function () {
@@ -90,7 +146,9 @@ describe('world class', function () {
       el = {
         sendKeys: () => Promise.resolve(el),
         hover: () => Promise.resolve(el),
-        click: () => Promise.resolve(el)
+        click: () => Promise.resolve(el),
+        getText: () => 'random text',
+        getAttribute: () => 'random value'
       }
       corRoutines = {
         waitForTitle: () => Promise.resolve(true),
@@ -275,6 +333,30 @@ describe('world class', function () {
         .then((result) => {
           corRoutines.waitFor.restore()
           return result.should.equal(el)
+        })
+        .catch((err) => {
+          throw err
+        })
+    })
+
+    it('getText', function () {
+      sinon.spy(corRoutines, 'waitFor')
+      return world.getText('abc')
+        .then((result) => {
+          corRoutines.waitFor.restore()
+          return result.should.equal('random text')
+        })
+        .catch((err) => {
+          throw err
+        })
+    })
+
+    it('getVal', function () {
+      sinon.spy(corRoutines, 'waitFor')
+      return world.getVal('abc')
+        .then((result) => {
+          corRoutines.waitFor.restore()
+          return result.should.equal('random value')
         })
         .catch((err) => {
           throw err

@@ -98,14 +98,14 @@ describe('world class', function () {
           if (selector === 'error') {
             throw new Error('In Error')
           } else {
-            resolve(true)
+            resolve(el)
           }
         })),
-        whenEnabled: () => Promise.resolve(true),
-        whenDisabled: () => Promise.resolve(true),
-        whenVisible: () => Promise.resolve(true),
-        whenHidden: () => Promise.resolve(true),
-        whenMatches: () => Promise.resolve(true)
+        whenEnabled: () => Promise.resolve(el),
+        whenDisabled: () => Promise.resolve(el),
+        whenVisible: () => Promise.resolve(el),
+        whenHidden: () => Promise.resolve(el),
+        whenMatches: () => Promise.resolve(el)
       }
 
       World = proxyquire('../lib/world', {
@@ -118,6 +118,11 @@ describe('world class', function () {
 
       driver = {
         sleep: () => Promise.resolve(),
+        actions: () => ({
+          mouseMove: () => ({
+            perform: () => Promise.resolve()
+          })
+        }),
         get: () => Promise.resolve(),
         wait: (fn) => fn
       }
@@ -143,114 +148,136 @@ describe('world class', function () {
       driver.get.restore()
     })
 
-    it('waitForTitle', function (done) {
+    it('waitForTitle', function () {
       sinon.spy(corRoutines, 'waitForTitle')
-      world.waitForTitle('abc')
+      return world.waitForTitle('abc')
         .then((result) => {
-          result.should.equal(true)
           corRoutines.waitForTitle.restore()
-          done()
+          return result.should.equal(true)
+        })
+        .catch((err) => {
+          throw err
         })
     })
 
-    it('waitFor success', function (done) {
+    it('waitFor success', function () {
       sinon.spy(corRoutines, 'waitFor')
-      world.waitFor('abc')
+      return world.waitFor('abc')
         .then((result) => {
-          result.should.equal(true)
           corRoutines.waitFor.restore()
-          done()
+          return result.should.equal(el)
+        })
+        .catch((err) => {
+          throw err
         })
     })
 
-    it('waitFor fail', function (done) {
+    it('waitFor fail', function () {
       const spy = sinon.spy(driver, 'sleep')
-      world.waitFor('error', 5)
+      return world.waitFor('error', 5)
+        .then(() => {
+          throw new Error('Expected to fail')
+        })
         .catch((err) => {
           expect(err.message).to.equal('In Error')
-          sinon.assert.callCount(spy, 5)
           driver.sleep.restore()
-          done()
+          return sinon.assert.callCount(spy, 5)
         })
     })
 
-    it('whenEnabled', function (done) {
+    it('whenEnabled', function () {
       sinon.spy(corRoutines, 'whenEnabled')
-      world.whenEnabled('abc')
+      return world.whenEnabled('abc')
         .then((result) => {
-          result.should.equal(true)
           corRoutines.whenEnabled.restore()
-          done()
+          return result.should.equal(el)
+        })
+        .catch((err) => {
+          throw err
         })
     })
 
-    it('whenDisabled', function (done) {
+    it('whenDisabled', function () {
       sinon.spy(corRoutines, 'whenDisabled')
-      world.whenDisabled('abc')
+      return world.whenDisabled('abc')
         .then((result) => {
-          result.should.equal(true)
           corRoutines.whenDisabled.restore()
-          done()
+          return result.should.equal(el)
+        })
+        .catch((err) => {
+          throw err
         })
     })
 
-    it('whenVisible', function (done) {
+    it('whenVisible', function () {
       sinon.spy(corRoutines, 'whenVisible')
-      world.whenVisible('abc')
+      return world.whenVisible('abc')
         .then((result) => {
-          result.should.equal(true)
           corRoutines.whenVisible.restore()
-          done()
+          return result.should.equal(el)
+        })
+        .catch((err) => {
+          throw err
         })
     })
 
-    it('whenHidden', function (done) {
+    it('whenHidden', function () {
       sinon.spy(corRoutines, 'whenHidden')
-      world.whenHidden('abc')
+      return world.whenHidden('abc')
         .then((result) => {
-          result.should.equal(true)
           corRoutines.whenHidden.restore()
-          done()
+          return result.should.equal(el)
+        })
+        .catch((err) => {
+          throw err
         })
     })
 
-    it('whenMatches', function (done) {
+    it('whenMatches', function () {
       sinon.spy(corRoutines, 'whenMatches')
-      world.whenMatches('abc', 'xyz')
+      return world.whenMatches('abc', 'xyz')
         .then((result) => {
-          result.should.equal(true)
           corRoutines.whenMatches.restore()
-          done()
+          return result.should.equal(el)
+        })
+        .catch((err) => {
+          throw err
         })
     })
 
-    it('sendKeys', function (done) {
+    it('sendKeys', function () {
       sinon.spy(corRoutines, 'waitFor')
-      world.sendKeys('abc')
+      return world.sendKeys('abc')
         .then((result) => {
-          result.should.equal(true)
           corRoutines.waitFor.restore()
-          done()
+          return result.should.equal(el)
+        })
+        .catch((err) => {
+          throw err
         })
     })
 
-    it('hover', function (done) {
+    it('hover', function () {
       sinon.spy(corRoutines, 'waitFor')
-      world.hover('abc')
+      return world.hover('abc')
         .then((result) => {
-          result.should.equal(true)
           corRoutines.waitFor.restore()
-          done()
+          return result.should.equal(el)
+        })
+        .catch((err) => {
+          throw err
         })
     })
 
-    it('click', function (done) {
+    it('click', function () {
       sinon.spy(corRoutines, 'waitFor')
-      world.click('abc')
+      return world.click('abc')
         .then((result) => {
-          result.should.equal(true)
           corRoutines.waitFor.restore()
-          done()
+          return result.should.equal(el)
+        })
+        .catch((err) => {
+          throw err
         })
     })
   })

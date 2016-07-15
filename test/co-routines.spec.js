@@ -56,6 +56,7 @@ describe('co-routines', function () {
           elementIsVisible: () => Promise.resolve(true),
           elementIsNotVisible: () => Promise.resolve(true),
           elementTextIs: () => Promise.resolve(true),
+          elementTextContains: () => Promise.resolve(true),
           titleIs: () => Promise.resolve(true),
           browserReady: () => Promise.resolve(true)
         })
@@ -91,6 +92,10 @@ describe('co-routines', function () {
         return coRoutines.whenMatches(el).should.eventually.be.equal(el)
       })
 
+      it('whenMatches', function () {
+        return coRoutines.whenContains(el).should.eventually.be.equal(el)
+      })
+
       it('waitFor', function () {
         return coRoutines.waitFor(el).should.eventually.be.equal(el)
       })
@@ -117,6 +122,7 @@ describe('co-routines', function () {
           elementIsVisible: () => Promise.reject({message: 'Not Visible'}),
           elementIsNotVisible: () => Promise.reject({message: 'Is Visible'}),
           elementTextIs: () => Promise.reject({message: 'Not Matching Text'}),
+          elementTextContains: () => Promise.reject({message: 'Not Contains Text'}),
           titleIs: () => Promise.reject({message: 'Not Matching Title'}),
           browserReady: () => Promise.reject({message: 'Not Ready'})
         })
@@ -164,6 +170,14 @@ describe('co-routines', function () {
         return coRoutines.whenMatches(el)
           .catch((err) => Promise.all([
             expect(Promise.resolve(err.message)).to.eventually.contain('Not Matching Text'),
+            expect(Promise.resolve(err.message)).to.eventually.contain(html)
+          ]))
+      })
+
+      it('whenContains', function () {
+        return coRoutines.whenContains(el)
+          .catch((err) => Promise.all([
+            expect(Promise.resolve(err.message)).to.eventually.contain('Not Contains Text'),
             expect(Promise.resolve(err.message)).to.eventually.contain(html)
           ]))
       })

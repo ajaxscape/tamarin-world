@@ -161,7 +161,8 @@ describe('world class', function () {
         whenDisabled: () => Promise.resolve(el),
         whenVisible: () => Promise.resolve(el),
         whenHidden: () => Promise.resolve(el),
-        whenMatches: () => Promise.resolve(el)
+        whenMatches: () => Promise.resolve(el),
+        whenContains: () => Promise.resolve(el)
       }
 
       World = proxyquire('../lib/world', {
@@ -294,6 +295,18 @@ describe('world class', function () {
       return world.whenMatches('abc', 'xyz')
         .then((result) => {
           corRoutines.whenMatches.restore()
+          return result.should.equal(el)
+        })
+        .catch((err) => {
+          throw err
+        })
+    })
+
+    it('whenContains', function () {
+      sinon.spy(corRoutines, 'whenContains')
+      return world.whenContains('abc', 'xyz')
+        .then((result) => {
+          corRoutines.whenContains.restore()
           return result.should.equal(el)
         })
         .catch((err) => {

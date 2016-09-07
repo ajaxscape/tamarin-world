@@ -146,7 +146,8 @@ describe('world class', function () {
         hover: () => Promise.resolve(el),
         click: () => Promise.resolve(el),
         getText: () => 'random text',
-        getAttribute: () => 'random value'
+        getAttribute: () => 'random value',
+        setAttribute: sinon.stub()
       }
       corRoutines = {
         waitForTitle: () => Promise.resolve(true),
@@ -373,6 +374,14 @@ describe('world class', function () {
           throw err
         })
     })
+
+    it('clear', function () {
+      sinon.spy(corRoutines, 'waitFor')
+      return world.clear('abc')
+        .then(() => {
+          corRoutines.waitFor.restore()
+          el.setAttribute.calledWith('value', '').should.be.true
+        })
+    })
   })
 })
-

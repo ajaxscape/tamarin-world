@@ -63,22 +63,22 @@ Under the hood, __tamarin-world__ waits until an element exists, is visible and 
 ## API
 __tamarin-world__ adds the following functions to the __cucumber.js__ world object:
 * setData (key, val)
-* getData (key)
-* sleep (delay)
-* visit (url)
-* waitForTitle (title)
-* waitFor (selector)
-* whenEnabled (selector)
-* whenDisabled (selector)
-* whenVisible (selector)
-* whenHidden (selector)
-* whenMatches (selector, val)
-* whenContains (selector, val)
-* sendKeys (selector, value)
-* hover (selector, delay)
-* click (selector)
-* getText (selector)
-* getVal (selector)
+* getData (key) .. _returns a promise resolving to the val of the key value pair_
+* sleep (delay) .. _returns a promise_
+* visit (url) .. _returns a promise_
+* waitForTitle (title) .._returns a promise resolving to true_
+* waitFor (selector) .._returns a promise resolving to a web element_
+* whenEnabled (selector) .._returns a promise resolving to a web element_
+* whenDisabled (selector) .._returns a promise resolving to a web element_
+* whenVisible (selector) .._returns a promise resolving to a web element_
+* whenHidden (selector) .._returns a promise resolving to a web element_
+* whenMatches (selector, val) .._returns a promise resolving to a web element_
+* whenContains (selector, val) .._returns a promise resolving to a web element_
+* sendKeys (selector, value) .._returns a promise resolving to a web element_
+* hover (selector, delay) .._returns a promise resolving to a web element_
+* click (selector) .._returns a promise resolving to a web element_
+* getText (selector) .._returns a promise resolving to the text within the web element_
+* getVal (selector) .._returns a promise resolving to the value of the web element_
 
 ## Install
 

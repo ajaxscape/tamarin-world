@@ -1,6 +1,6 @@
 {
   "name": "tamarin-world",
-  "version": "0.0.33",
+  "version": "0.0.34",
   "description": "Tamarin world module",
   "main": "index.js",
   "scripts": {
@@ -50,6 +50,6 @@
     "bluebird": "^3.4.0",
     "lodash": "^4.13.1",
     "phantomjs-prebuilt": "^2.1.7",
-    "selenium-webdriver": "^3.0.0-beta-3"
+    "selenium-webdriver": "^2.53.3"
   }
 }

@@ -33,6 +33,7 @@ describe('until', function () {
   describe('condition', function () {
     let found
     let url
+    let cookie
     const title = 'test title'
 
     const world = {
@@ -40,7 +41,8 @@ describe('until', function () {
         return Promise.resolve({
           findElement: () => found ? Promise.resolve() : Promise.reject(),
           getTitle: () => Promise.resolve(title),
-          getCurrentUrl: () => Promise.resolve(url)
+          getCurrentUrl: () => Promise.resolve(url),
+          manage: () => ({ getCookie: (cookieName) => cookie ? Promise.resolve(cookie) : Promise.reject()})
         })
       }
     }
@@ -86,6 +88,20 @@ describe('until', function () {
       it('rejected', function () {
         url = 'data:,'
         return browserReady().should.eventually.equal(false)
+      })
+    })
+
+    describe('cookieExists', function () {
+      const cookieExists = until.cookieExists().fn
+
+      it('resolved', function () {
+        cookie = { value: 'foo' }
+        return cookieExists().should.eventually.equal(true)
+      })
+
+      it('rejected', function () {
+        cookie = undefined
+        return cookieExists().should.eventually.equal(false)
       })
     })
   })

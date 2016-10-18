@@ -138,7 +138,7 @@ describe('world class', function () {
   })
 
   describe('method', function () {
-    let World, world, driver, el, corRoutines
+    let World, world, driver, el, cookie, corRoutines
 
     beforeEach(function () {
       el = {
@@ -148,8 +148,11 @@ describe('world class', function () {
         getText: () => 'random text',
         getAttribute: () => 'random value'
       }
+      cookie = {value: 'foo'}
       corRoutines = {
         waitForTitle: () => Promise.resolve(true),
+        waitForBrowser: () => Promise.resolve('/foo'),
+        waitForCookie: () => Promise.resolve(cookie),
         waitFor: (selector) => (new Promise((resolve) => {
           if (selector === 'error') {
             throw new Error('In Error')
@@ -211,6 +214,30 @@ describe('world class', function () {
         .then((result) => {
           corRoutines.waitForTitle.restore()
           return result.should.equal(true)
+        })
+        .catch((err) => {
+          throw err
+        })
+    })
+
+    it('waitForUrl', function () {
+      sinon.spy(corRoutines, 'waitForBrowser')
+      return world.waitForUrl()
+        .then((result) => {
+          corRoutines.waitForBrowser.restore()
+          return result.should.equal('/foo')
+        })
+        .catch((err) => {
+          throw err
+        })
+    })
+
+    it('waitForCookie', function () {
+      sinon.spy(corRoutines, 'waitForCookie')
+      return world.waitForCookie()
+        .then((result) => {
+          corRoutines.waitForCookie.restore()
+          return result.should.equal(cookie)
         })
         .catch((err) => {
           throw err

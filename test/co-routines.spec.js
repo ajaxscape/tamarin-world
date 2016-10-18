@@ -25,10 +25,11 @@ describe('co-routines', function () {
   })
 
   describe('valid world', function () {
+    const html = '<h1>Hello</h1>'
+    const cookie = { value: 'foobar' }
     let world
     let coRoutines
     let el
-    let html = '<h1>Hello</h1>'
 
     beforeEach(function () {
       world = new TamarinWorld()
@@ -48,6 +49,9 @@ describe('co-routines', function () {
               return Promise.reject(new Error('findElement failed'))
             }
           },
+          manage: () => ({
+            getCookie: () => Promise.resolve(cookie)
+          }),
           wait: (fn) => fn
         }))
         sinon.stub(world, 'getUntil').returns({
@@ -58,6 +62,7 @@ describe('co-routines', function () {
           elementTextIs: () => Promise.resolve(true),
           elementTextContains: () => Promise.resolve(true),
           titleIs: () => Promise.resolve(true),
+          cookieExists: () => Promise.resolve(true),
           browserReady: () => Promise.resolve(true)
         })
         coRoutines = cor.get(world, 100)
@@ -107,6 +112,10 @@ describe('co-routines', function () {
       it('waitForBrowser', function () {
         return coRoutines.waitForBrowser().should.eventually.be.equal('/ready')
       })
+
+      it('waitForCookie', function () {
+        return coRoutines.waitForCookie().should.eventually.be.equal(cookie)
+      })
     })
 
     describe('rejected', function () {
@@ -114,7 +123,8 @@ describe('co-routines', function () {
         sinon.stub(world, 'getDriver').returns(Promise.resolve({
           getCurrentUrl: () => Promise.resolve('/ready'),
           findElement: () => Promise.resolve(el),
-          wait: (fn) => fn
+          wait: (fn) => fn,
+          manage: () => ({getCookie: () => Promise.resolve(cookie)})
         }))
         sinon.stub(world, 'getUntil').returns({
           elementIsEnabled: () => Promise.reject({message: 'Not Enabled'}),
@@ -124,7 +134,8 @@ describe('co-routines', function () {
           elementTextIs: () => Promise.reject({message: 'Not Matching Text'}),
           elementTextContains: () => Promise.reject({message: 'Not Contains Text'}),
           titleIs: () => Promise.reject({message: 'Not Matching Title'}),
-          browserReady: () => Promise.reject({message: 'Not Ready'})
+          browserReady: () => Promise.reject({message: 'Not Ready'}),
+          cookieExists: () => Promise.reject({message: 'Not Cookie Exists'})
         })
         coRoutines = cor.get(world, 100)
       })
@@ -200,6 +211,13 @@ describe('co-routines', function () {
         return coRoutines.waitForBrowser()
           .catch((err) => Promise.all([
             expect(Promise.resolve(err.message)).to.eventually.contain('Not Ready')
+          ]))
+      })
+
+      it('waitForCookie', function () {
+        return coRoutines.waitForCookie()
+          .catch((err) => Promise.all([
+            expect(Promise.resolve(err.message)).to.eventually.contain('Not Cookie Exists')
           ]))
       })
     })

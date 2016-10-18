@@ -66,7 +66,9 @@ __tamarin-world__ adds the following functions to the __cucumber.js__ world obje
 * getData (key) .. _returns a promise resolving to the val of the key value pair_
 * sleep (delay) .. _returns a promise_
 * visit (url) .. _returns a promise_
-* waitForTitle (title) .._returns a promise resolving to true_
+* waitForTitle (title) .._returns a promise resolving to true if found_
+* waitForCookie (cookieName) .._returns a promise resolving to a cookie_
+* waitForUrl () .._returns a promise resolving to true if found_
 * waitFor (selector) .._returns a promise resolving to a web element_
 * whenEnabled (selector) .._returns a promise resolving to a web element_
 * whenDisabled (selector) .._returns a promise resolving to a web element_

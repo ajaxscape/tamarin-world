@@ -141,6 +141,7 @@ describe('world class', function () {
     let World, world, driver, el, cookie, corRoutines
 
     beforeEach(function () {
+      sinon.stub(console, 'error').returns(() => {})
       el = {
         sendKeys: () => Promise.resolve(el),
         hover: () => Promise.resolve(el),
@@ -192,6 +193,7 @@ describe('world class', function () {
 
     afterEach(function () {
       world.getDriver.restore()
+      console.error.restore()
     })
 
     it('sleep', function () {

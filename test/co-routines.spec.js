@@ -137,88 +137,64 @@ describe('co-routines', function () {
           browserReady: () => Promise.reject({message: 'Not Ready'}),
           cookieExists: () => Promise.reject({message: 'Not Cookie Exists'})
         })
+        sinon.stub(console, 'error').returns(() => {})
         coRoutines = cor.get(world, 100)
       })
 
       afterEach(function () {
         world.getUntil.restore()
         world.getDriver.restore()
+        console.error.restore()
       })
 
       it('whenEnabled', function () {
         return coRoutines.whenEnabled(el)
-          .catch((err) => Promise.all([
-            expect(Promise.resolve(err.message)).to.eventually.contain('Not Enabled'),
-            expect(Promise.resolve(err.message)).to.eventually.contain(html)
-          ]))
+          .catch((err) => expect(Promise.resolve(err.message)).to.eventually.contain('Not Enabled'))
       })
 
       it('whenDisabled', function () {
         return coRoutines.whenDisabled(el)
-          .catch((err) => Promise.all([
-            expect(Promise.resolve(err.message)).to.eventually.contain('Not Disabled'),
-            expect(Promise.resolve(err.message)).to.eventually.contain(html)
-          ]))
+          .catch((err) => expect(Promise.resolve(err.message)).to.eventually.contain('Not Disabled'))
       })
 
       it('whenVisible', function () {
         return coRoutines.whenVisible(el)
-          .catch((err) => Promise.all([
-            expect(Promise.resolve(err.message)).to.eventually.contain('Not Visible'),
-            expect(Promise.resolve(err.message)).to.eventually.contain(html)
-          ]))
+          .catch((err) => expect(Promise.resolve(err.message)).to.eventually.contain('Not Visible'))
       })
 
       it('whenHidden', function () {
         return coRoutines.whenHidden(el)
-          .catch((err) => Promise.all([
-            expect(Promise.resolve(err.message)).to.eventually.contain('Is Visible'),
-            expect(Promise.resolve(err.message)).to.eventually.contain(html)
-          ]))
+          .catch((err) => expect(Promise.resolve(err.message)).to.eventually.contain('Is Visible'))
       })
 
       it('whenMatches', function () {
         return coRoutines.whenMatches(el)
-          .catch((err) => Promise.all([
-            expect(Promise.resolve(err.message)).to.eventually.contain('Not Matching Text'),
-            expect(Promise.resolve(err.message)).to.eventually.contain(html)
-          ]))
+          .catch((err) => expect(Promise.resolve(err.message)).to.eventually.contain('Not Matching Text'))
       })
 
       it('whenContains', function () {
         return coRoutines.whenContains(el)
-          .catch((err) => Promise.all([
-            expect(Promise.resolve(err.message)).to.eventually.contain('Not Contains Text'),
-            expect(Promise.resolve(err.message)).to.eventually.contain(html)
-          ]))
+          .catch((err) => expect(Promise.resolve(err.message)).to.eventually.contain('Not Contains Text'))
       })
 
       it('waitFor', function () {
         return coRoutines.waitFor(el)
-          .catch((err) => Promise.all([
-            expect(Promise.resolve(err.message)).to.eventually.contain('Not Visible')
-          ]))
+          .catch((err) => expect(Promise.resolve(err.message)).to.eventually.contain('Not Visible'))
       })
 
       it('waitForTitle', function () {
         return coRoutines.waitForTitle(el)
-          .catch((err) => Promise.all([
-            expect(Promise.resolve(err.message)).to.eventually.contain('Not Matching Title')
-          ]))
+          .catch((err) => expect(Promise.resolve(err.message)).to.eventually.contain('Not Matching Title'))
       })
 
       it('waitForBrowser', function () {
         return coRoutines.waitForBrowser()
-          .catch((err) => Promise.all([
-            expect(Promise.resolve(err.message)).to.eventually.contain('Not Ready')
-          ]))
+          .catch((err) => expect(Promise.resolve(err.message)).to.eventually.contain('Not Ready'))
       })
 
       it('waitForCookie', function () {
         return coRoutines.waitForCookie()
-          .catch((err) => Promise.all([
-            expect(Promise.resolve(err.message)).to.eventually.contain('Not Cookie Exists')
-          ]))
+          .catch((err) => expect(Promise.resolve(err.message)).to.eventually.contain('Not Cookie Exists'))
       })
     })
   })

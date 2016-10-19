@@ -55,6 +55,7 @@ describe('co-routines', function () {
           wait: (fn) => fn
         }))
         sinon.stub(world, 'getUntil').returns({
+          elementsLocated: () => Promise.resolve(true),
           elementIsEnabled: () => Promise.resolve(true),
           elementIsDisabled: () => Promise.resolve(true),
           elementIsVisible: () => Promise.resolve(true),
@@ -75,6 +76,10 @@ describe('co-routines', function () {
 
       it('findElement', function () {
         return coRoutines.findElement(el).should.eventually.be.equal(el)
+      })
+
+      it('whenExists', function () {
+        return coRoutines.whenExists(el).should.eventually.be.equal(el)
       })
 
       it('whenEnabled', function () {
@@ -127,6 +132,7 @@ describe('co-routines', function () {
           manage: () => ({getCookie: () => Promise.resolve(cookie)})
         }))
         sinon.stub(world, 'getUntil').returns({
+          elementsLocated: () => Promise.reject({message: 'Not Located'}),
           elementIsEnabled: () => Promise.reject({message: 'Not Enabled'}),
           elementIsDisabled: () => Promise.reject({message: 'Not Disabled'}),
           elementIsVisible: () => Promise.reject({message: 'Not Visible'}),
@@ -145,6 +151,11 @@ describe('co-routines', function () {
         world.getUntil.restore()
         world.getDriver.restore()
         console.error.restore()
+      })
+
+      it('whenExists', function () {
+        return coRoutines.whenExists(el)
+          .catch((err) => expect(Promise.resolve(err.message)).to.eventually.contain('Not Located'))
       })
 
       it('whenEnabled', function () {

@@ -161,6 +161,7 @@ describe('world class', function () {
             resolve(el)
           }
         })),
+        whenExists: () => Promise.resolve(el),
         whenEnabled: () => Promise.resolve(el),
         whenDisabled: () => Promise.resolve(el),
         whenVisible: () => Promise.resolve(el),
@@ -268,6 +269,18 @@ describe('world class', function () {
           expect(err.message).to.equal('In Error')
           driver.sleep.restore()
           return sinon.assert.callCount(spy, 5)
+        })
+    })
+
+    it('whenExists', function () {
+      sinon.spy(corRoutines, 'whenExists')
+      return world.whenExists('abc')
+        .then((result) => {
+          corRoutines.whenExists.restore()
+          return result.should.equal(el)
+        })
+        .catch((err) => {
+          throw err
         })
     })
 

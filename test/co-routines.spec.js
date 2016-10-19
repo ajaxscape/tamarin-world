@@ -26,12 +26,13 @@ describe('co-routines', function () {
 
   describe('valid world', function () {
     const html = '<h1>Hello</h1>'
-    const cookie = { value: 'foobar' }
+    let cookie
     let world
     let coRoutines
     let el
 
     beforeEach(function () {
+      cookie = { value: 'foobar' }
       world = new TamarinWorld()
       el = {
         getOuterHtml: () => Promise.resolve(html)
@@ -120,6 +121,13 @@ describe('co-routines', function () {
 
       it('waitForCookie', function () {
         return coRoutines.waitForCookie().should.eventually.be.equal(cookie)
+      })
+
+      it('waitForCookie has no value', function () {
+        cookie = {} // set cookie with no value
+        const cookieName = 'foo'
+        return coRoutines.waitForCookie(cookieName)
+          .catch((err) => expect(Promise.resolve(err.message)).to.eventually.contain(`"${cookieName}"`))
       })
     })
 

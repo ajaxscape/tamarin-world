@@ -1,6 +1,6 @@
 {
   "name": "tamarin-world",
-  "version": "0.0.43",
+  "version": "0.0.44",
   "description": "Tamarin world module",
   "main": "index.js",
   "scripts": {
@@ -40,8 +40,10 @@
     "chai": "^3.5.0",
     "chai-as-promised": "^6.0.0",
     "chai-things": "^0.2.0",
+    "coveralls": "^2.11.14",
     "istanbul": "^0.4.3",
     "mocha": "^3.1.0",
+    "mocha-lcov-reporter": "^1.2.0",
     "proxyquire": "^1.7.10",
     "sinon": "^1.17.4",
     "standard": "^8.3.0"

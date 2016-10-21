@@ -18,6 +18,12 @@ coverage
 # Git
 .gitignore
 
+# Travis
+.travis.yml
+
+# Scripts
+scripts
+
 # Node Modules
 node_modules
 .npmignore

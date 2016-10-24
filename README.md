@@ -1,7 +1,10 @@
 #tamarin-world
-[![NPM Version][npm-image]][npm-url]
-[![Build Status](https://travis-ci.org/ajaxscape/tamarin-world.svg?branch=master)](https://travis-ci.org/ajaxscape/tamarin-world)
-[![js-standard-style][standard-image]][standard-url]
+
+<p align="left">
+  <a href="https://travis-ci.org/ajaxscape/tamarin-world"><img src="https://img.shields.io/travis/ajaxscape/tamarin-world/master.svg" alt="Travis"></a>
+  <a href="https://www.npmjs.com/package/tamarin-world"><img src="https://img.shields.io/npm/dm/tamarin-world.svg" alt="npm downloads"></a>
+  <a href="https://www.npmjs.com/package/tamarin-world"><img src="https://img.shields.io/npm/v/tamarin-world.svg" alt="npm version"></a>
+</p>
 
 As an extension to [Cucumber.js](https://www.npmjs.com/package/cucumber), __tamarin-world__ allows the tester/developer to concentrate on the functionality that needs to be tested rather than the boiler-plate code around it in order for the test to work.
 

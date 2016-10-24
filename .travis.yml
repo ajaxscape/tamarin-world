@@ -2,4 +2,4 @@ language: node_js
 node_js:
   - "6"
 script:
-  - sh scripts/coverage,sh
+  - sh scripts/coverage.sh

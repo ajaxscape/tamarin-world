@@ -3,7 +3,7 @@
 <p align="left">
   <a href="https://www.npmjs.com/package/tamarin-world"><img src="https://img.shields.io/npm/v/tamarin-world.svg" alt="npm version"></a>
   <a href="https://travis-ci.org/ajaxscape/tamarin-world"><img src="https://img.shields.io/travis/ajaxscape/tamarin-world/master.svg" alt="Travis"></a>
-  <a href="https://www.npmjs.com/package/tamarin-world"><img src="https://img.shields.io/npm/dm/tamarin-world.svg" alt="npm downloads"></a>
+  <a href="https://coveralls.io/github/ajaxscape/tamarin-world"><img src="https://coveralls.io/repos/github/ajaxscape/tamarin-world/badge.svg" alt="Coverage"></a>
   <a href="https://david-dm.org/ajaxscape/tamarin-world"><img src="https://david-dm.org/ajaxscape/tamarin-world/status.svg" alt="dependencies status"></a>
   <a href="https://david-dm.org/ajaxscape/tamarin-world"><img src="https://david-dm.org/ajaxscape/tamarin-world/dev-status.svg" alt="devDependencies status"></a>
 </p>

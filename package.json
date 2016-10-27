@@ -1,9 +1,10 @@
 {
   "name": "tamarin-world",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "Tamarin world module",
   "main": "index.js",
   "scripts": {
+    "build": "echo building",
     "test": "node node_modules/mocha/bin/mocha",
     "coverage": "node node_modules/istanbul/lib/cli.js cover ./node_modules/mocha/bin/_mocha -- --ui bdd -R spec -t 5000",
     "preversion": "npm test",

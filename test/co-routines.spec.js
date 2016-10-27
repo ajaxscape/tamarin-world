@@ -19,7 +19,12 @@ describe('co-routines', function () {
     expect(cor.get).to.throw('World must be defined')
   })
 
-  it('must have a valid timeout', function () {
+  it('get must return a function', function () {
+    const world = new TamarinWorld()
+    expect(() => cor.get(world)).to.be.an('function')
+  })
+
+  it('must have a valid timeout if entered', function () {
     const world = new TamarinWorld()
     expect(() => cor.get(world, 'abc')).to.throw('Default Timeout must be a number')
   })

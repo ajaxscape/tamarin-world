@@ -2,6 +2,7 @@
 
 const webDriver = require('selenium-webdriver')
 const TamarinWorld = require('../lib/world')
+const defaultUntil = require('../lib/until')
 const _ = require('lodash')
 const chai = require('chai')
 const sinon = require('sinon')
@@ -40,6 +41,13 @@ describe('world class', function () {
       .then((driver) => {
         _.isFunction(driver.findElement).should.equal(true)
       })
+  })
+
+  it('can retrieve the default until module', function () {
+    const world = new TamarinWorld(null)
+    const until = world.getUntil()
+    until.should.be.an('object')
+    until.should.deep.equal(defaultUntil(world))
   })
 
   it('can set and retrieve the until module', function () {

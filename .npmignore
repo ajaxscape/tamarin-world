@@ -4,9 +4,7 @@
 
 # IntelliJ project files
 .idea
-*.iml
 out
-gen
 
 # Test
 test
@@ -29,3 +27,5 @@ node_modules
 .npmignore
 
 npm-debug.log
+
+esdoc

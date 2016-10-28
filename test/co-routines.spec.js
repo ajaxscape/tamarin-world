@@ -1,6 +1,8 @@
 'use strict'
-
+const webDriver = require('selenium-webdriver')
+const WebElement = webDriver.WebElement
 const cor = require('../lib/co-routines')
+const defaults = require('../lib/defaults')
 const TamarinWorld = require('../lib/world')
 const chai = require('chai')
 const sinon = require('sinon')
@@ -19,14 +21,12 @@ describe('co-routines', function () {
     expect(cor.get).to.throw('World must be defined')
   })
 
-  it('get must return a function', function () {
-    const world = new TamarinWorld()
-    expect(() => cor.get(world)).to.be.an('function')
+  it('get must return the default timeout', function () {
+    expect(cor.get(new TamarinWorld()).getTimeout()).to.be.equal(defaults.defaultTimeout)
   })
 
   it('must have a valid timeout if entered', function () {
-    const world = new TamarinWorld()
-    expect(() => cor.get(world, 'abc')).to.throw('Default Timeout must be a number')
+    expect(() => cor.get(new TamarinWorld(), 'abc')).to.throw('Default Timeout must be a number')
   })
 
   describe('valid world', function () {
@@ -84,6 +84,10 @@ describe('co-routines', function () {
         return coRoutines.findElement(el).should.eventually.be.equal(el)
       })
 
+      it('findElement as WebElement', function () {
+        return coRoutines.findElement(new WebElement()).should.eventually.deep.equal(new WebElement())
+      })
+
       it('whenExists', function () {
         return coRoutines.whenExists(el).should.eventually.be.equal(el)
       })
@@ -132,15 +136,17 @@ describe('co-routines', function () {
         cookie = {} // set cookie with no value
         const cookieName = 'foo'
         return coRoutines.waitForCookie(cookieName)
-          .catch((err) => expect(Promise.resolve(err.message)).to.eventually.contain(`"${cookieName}"`))
+          .catch((err) => expect(Promise.resolve(err.message)).to.eventually.equal(`Cookie "${cookieName}" doesn't exist`))
       })
     })
 
     describe('rejected', function () {
+      let findElementFailure
       beforeEach(function () {
+        findElementFailure = false
         sinon.stub(world, 'getDriver').returns(Promise.resolve({
           getCurrentUrl: () => Promise.resolve('/ready'),
-          findElement: () => Promise.resolve(el),
+          findElement: () => findElementFailure ? Promise.reject({message: 'Not Found'}) : Promise.resolve(el),
           wait: (fn) => fn,
           manage: () => ({getCookie: () => Promise.resolve(cookie)})
         }))
@@ -164,6 +170,12 @@ describe('co-routines', function () {
         world.getUntil.restore()
         world.getDriver.restore()
         console.error.restore()
+      })
+
+      it('findElement', function () {
+        findElementFailure = true
+        return coRoutines.findElement(el)
+          .catch((err) => expect(Promise.resolve(err.message)).to.eventually.contain('Not Found'))
       })
 
       it('whenExists', function () {
